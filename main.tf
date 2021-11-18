@@ -33,7 +33,7 @@ provider "kubernetes" {
 }
 
 module "gke" {
-  source                     = "github.com/terraform-google-modules/kubernetes-engine/google"
+  source                     = "github.com/terraform-google-modules/terraform-google-kubernetes-engine"
   project_id                 = "wabbit-rk5"
   name                       = "gke-test-1"
   region                     = "us-west3"
