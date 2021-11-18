@@ -61,7 +61,7 @@ module "gke" {
     {
       name                  = "regional-pool"
       preeptible            = false
-      machine_type          = "e2-custom-4-4096"
+      machine_type          = "e2-micro"
       image_type            = "UBUNTU"
       disk_type             = "pd-balanced"
       disk_size_gb          = 30
