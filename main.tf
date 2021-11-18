@@ -34,17 +34,19 @@ provider "kubernetes" {
 
 module "gke" {
   source                     = "github.com/terraform-google-modules/terraform-google-kubernetes-engine"
-  project_id                 = "wabbit-rk5"
-  name                       = "gke-test-1"
-  region                     = "us-west3"
-  zones                      = ["us-west3-a", "us-west3-b", "us-west3-f"]
-  network                    = "vpc-01"
-  subnetwork                 = "us-west3-01"
-  ip_range_pods              = "us-west3-01-gke-01-pods"
-  ip_range_services          = "us-west3-01-gke-01-services"
+  project_id                  = var.project_id
+  name                        = gke-test-1"
+  regional                    = true
+  region                      = var.region
+  network                     = var.network
+  subnetwork                  = var.subnetwork
+  ip_range_pods               = var.ip_range_pods
+  ip_range_services           = var.ip_range_services
+  create_service_account      = true
+  service_account             = var.compute_engine_service_account
   http_load_balancing        = false
-  horizontal_pod_autoscaling = true
-  network_policy             = false
+  skip_provisioners           = var.skip_provisioners
+  network_policy              = true
 
   node_pools = [
     {

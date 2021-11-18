@@ -1,0 +1,11 @@
+  project_id                 = "wabbit-rk5"
+  name                       = "gke-test-1"
+  region                     = "us-west3"
+  zones                      = ["us-west3-a", "us-west3-b", "us-west3-f"]
+  network                    = "vpc-01"
+  subnetwork                 = "us-west3-01"
+  ip_range_pods              = "us-west3-01-gke-01-pods"
+  ip_range_services          = "us-west3-01-gke-01-services"
+  http_load_balancing        = false
+  horizontal_pod_autoscaling = true
+  network_policy             = false
