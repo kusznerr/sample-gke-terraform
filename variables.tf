@@ -19,6 +19,7 @@ variable "GOOGLE_CREDENTIALS" {
 
 variable "project_id" {
   description = "The project ID to host the cluster in"
+  default     = ""
 }
 
 variable "cluster_name_suffix" {
@@ -28,26 +29,32 @@ variable "cluster_name_suffix" {
 
 variable "region" {
   description = "The region to host the cluster in"
+  default     = "eu-west3"
 }
 
 variable "network" {
   description = "The VPC network to host the cluster in"
+  default     = ""
 }
 
 variable "subnetwork" {
   description = "The subnetwork to host the cluster in"
+  default     = ""
 }
 
 variable "ip_range_pods" {
   description = "The secondary ip range to use for pods"
+  default     = ""
 }
 
 variable "ip_range_services" {
   description = "The secondary ip range to use for services"
+  default     = ""
 }
 
 variable "compute_engine_service_account" {
   description = "Service account to associate to the nodes in the cluster"
+  default     = "sa@projcect.com"
 }
 
 variable "skip_provisioners" {

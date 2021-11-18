@@ -19,8 +19,7 @@ locals {
 }
 
 provider "google" {
-  version = "~> 3.42.0"
-  region  = var.region
+    region  = var.region
 }
 
 # google_client_config and kubernetes provider must be explicitly specified like the following.
@@ -35,7 +34,7 @@ provider "kubernetes" {
 module "gke" {
   source                     = "github.com/terraform-google-modules/terraform-google-kubernetes-engine"
   project_id                  = var.project_id
-  name                        = gke-test-1"
+  name                        = "gke-test-1"
   regional                    = true
   region                      = var.region
   network                     = var.network
