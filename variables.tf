@@ -1,3 +1,7 @@
+variable "GOOGLE_CREDENTIALS" {
+  description = "Credentials set in TFE workspace"
+}
+
 variable "project_id" {
   description = "your_project_id"
   default= "wabbit-rk5"
