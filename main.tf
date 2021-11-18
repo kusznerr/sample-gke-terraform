@@ -23,6 +23,7 @@ provider "google" {
   region  = var.region
 }
 
+# google_client_config and kubernetes provider must be explicitly specified like the following.
 data "google_client_config" "default" {}
 
 provider "kubernetes" {
@@ -32,25 +33,80 @@ provider "kubernetes" {
 }
 
 module "gke" {
-  source                 = "../../"
-  project_id             = var.project_id
-  name                   = "${local.cluster_type}-cluster${var.cluster_name_suffix}"
-  regional               = true
-  region                 = var.region
-  network                = var.network
-  subnetwork             = var.subnetwork
-  ip_range_pods          = var.ip_range_pods
-  ip_range_services      = var.ip_range_services
-  create_service_account = false
-  service_account        = var.compute_engine_service_account
-  skip_provisioners      = var.skip_provisioners
-}
+  source                     = "github.com/terraform-google-modules/kubernetes-engine/google"
+  project_id                 = "wabbit-rk5"
+  name                       = "gke-test-1"
+  region                     = "us-west3"
+  zones                      = ["us-west3-a", "us-west3-b", "us-west3-f"]
+  network                    = "vpc-01"
+  subnetwork                 = "us-west3-01"
+  ip_range_pods              = "us-west3-01-gke-01-pods"
+  ip_range_services          = "us-west3-01-gke-01-services"
+  http_load_balancing        = false
+  horizontal_pod_autoscaling = true
+  network_policy             = false
 
-module "gke_auth" {
-  source = "../../modules/auth"
+  node_pools = [
+    {
+      name                      = "default-node-pool"
+      machine_type              = "e2-micro"
+      node_locations            = "us-west3-b,us-west3-c"
+      min_count                 = 1
+      max_count                 = 2
+      local_ssd_count           = 0
+      disk_size_gb              = 100
+      disk_type                 = "pd-standard"
+      image_type                = "COS"
+      auto_repair               = true
+      auto_upgrade              = true
+      service_account           = "project-service-account@wabbit-rk5.iam.gserviceaccount.com"
+      preemptible               = false
+      initial_node_count        = 80
+    },
+  ]
 
-  project_id   = var.project_id
-  location     = module.gke.location
-  cluster_name = module.gke.name
+  node_pools_oauth_scopes = {
+    all = []
+
+    default-node-pool = [
+      "https://www.googleapis.com/auth/cloud-platform",
+    ]
+  }
+
+  node_pools_labels = {
+    all = {}
+
+    default-node-pool = {
+      default-node-pool = true
+    }
+  }
+
+  node_pools_metadata = {
+    all = {}
+
+    default-node-pool = {
+      node-pool-metadata-custom-value = "my-node-pool"
+    }
+  }
+
+  node_pools_taints = {
+    all = []
+
+    default-node-pool = [
+      {
+        key    = "default-node-pool"
+        value  = true
+        effect = "PREFER_NO_SCHEDULE"
+      },
+    ]
+  }
+
+  node_pools_tags = {
+    all = []
+
+    default-node-pool = [
+      "default-node-pool",
+    ]
+  }
 }
 

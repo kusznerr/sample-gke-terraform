@@ -13,6 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+variable "GOOGLE_CREDENTIALS" {
+  description = "This needs to be added na Terraform cloud workspace veriables"
+}
 
 variable "project_id" {
   description = "The project ID to host the cluster in"
