@@ -30,10 +30,12 @@ output "client_token" {
 
 output "ca_certificate" {
   value = module.gke_auth.cluster_ca_certificate
+  sensitive = true 
 }
 
 output "kubeconfig_raw" {
   value = module.gke_auth.kubeconfig_raw
+  sensitive = true 
 }
 
 output "service_account" {
