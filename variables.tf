@@ -14,7 +14,7 @@ variable "region" {
 
 variable "zones" {
   description = "The region to host the cluster in"
-  default     = ["europe-west4-a","europe-west4-b","europe-west4-c"]
+  default     = ["europe-west4-a"]
 }
 
 variable "cluster_name" {

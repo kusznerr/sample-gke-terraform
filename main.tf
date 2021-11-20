@@ -11,7 +11,7 @@ provider "google" {
   project     = var.project_id
   region      = var.region
 }
-
+/*
 module "gke_auth" {
   source = "terraform-google-modules/kubernetes-engine/google//modules/auth"
   depends_on   = [module.gke]
@@ -70,7 +70,7 @@ module "gke" {
     {
       name                  = "regional-pool"
       preeptible            = false
-      machine_type          = "e2-micro"
+      machine_type          = "e2-medium"
       image_type            = "UBUNTU"
       disk_type             = "pd-balanced"
       disk_size_gb          = 30
@@ -143,3 +143,5 @@ resource "kubectl_manifest" "argocd" {
     yaml_body = element(data.kubectl_file_documents.argocd.documents, count.index)
     override_namespace = "argocd"
 }
+
+*/
