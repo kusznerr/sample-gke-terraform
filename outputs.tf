@@ -1,3 +1,4 @@
+/* 
 output "project_id" {
   value       = var.project_id
   description = "GCloud Project ID"
@@ -42,3 +43,5 @@ output "service_account" {
   description = "The default service account used for running nodes."
   value       = module.gke.service_account
 }
+
+*/
