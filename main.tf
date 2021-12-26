@@ -145,6 +145,7 @@ resource helm_release root-app {
 /*
 // Enable ArgoCD server
 // Any changes to this configuration ie. destroy / refresh throws terraform errors
+// Moved to helm release for ArgoCD as well as root application as outlined above
 
 provider "kubectl" {
   host                   = module.gke_auth.host
