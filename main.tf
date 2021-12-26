@@ -77,7 +77,7 @@ module "gke" {
       local_ssd_count       = 0
       tags                  = "gke-node"
       min_count             = 1
-      max_count             = 1
+      max_count             = 2
       max_surge             = 2
       max_unavailable       = 1
       autoscaling           = true
@@ -132,6 +132,10 @@ data "kubectl_file_documents" "argocd" {
     content = file("./manifests/argocd/install.yaml")
 }
 
+data "kubectl_file_documents" "apps" {
+    content = file("./manifests/argocd/apps.yaml")
+}
+
 resource "kubectl_manifest" "namespace" {
     count     = length(data.kubectl_file_documents.namespace.documents)
     yaml_body = element(data.kubectl_file_documents.namespace.documents, count.index)
@@ -144,5 +148,14 @@ resource "kubectl_manifest" "argocd" {
     ]
     count     = length(data.kubectl_file_documents.argocd.documents)
     yaml_body = element(data.kubectl_file_documents.argocd.documents, count.index)
+    override_namespace = "argocd"
+}
+
+resource "kubectl_manifest" "apps" {
+    depends_on = [
+      kubectl_manifest.argocd,
+    ]
+    count     = length(data.kubectl_file_documents.apps.documents)
+    yaml_body = element(data.kubectl_file_documents.apps.documents, count.index)
     override_namespace = "argocd"
 }
