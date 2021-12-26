@@ -1,5 +1,13 @@
 terraform {
   required_providers {
+    kubernetes = {
+      source = "hashicorp/kubernetes"
+      version = ">= 2.0.3"
+    }
+    helm = {
+      source  = "hashicorp/helm"
+      version = ">= 2.1.0"
+    }
     kubectl = {
       source = "gavinbunney/kubectl"
       version = "1.13.1"
@@ -114,12 +122,33 @@ module "gke" {
   }
 }
 
+provider "helm" {
+  kubernetes {
+    host  = module.gke_auth.host
+    token = module.gke_auth.token
+    cluster_ca_certificate = base64decode(module.gke_auth.cluster_ca_certificate)
+  }
+}
+
+resource helm_release argocd-install {
+  name       = "argocd-apps"
+  repository = "https://github.com/kusznerr/wabbit-rk5-gke-argo-apps/charts"
+  chart      = "argo-cd"
+}
+
+resource helm_release root-app {
+  name       = "root-app"
+  repository = "https://github.com/kusznerr/wabbit-rk5-gke-argo-apps/"
+  chart      = "apps"
+}
+
+/*
 // Enable ArgoCD server
 // Any changes to this configuration ie. destroy / refresh throws terraform errors
 
 provider "kubectl" {
   host                   = module.gke_auth.host
-  cluster_ca_certificate = module.gke_auth.cluster_ca_certificate
+  cluster_ca_certificate = base64decode(module.gke_auth.cluster_ca_certificate)
   token                  = module.gke_auth.token
   load_config_file       = false
 }
@@ -159,3 +188,5 @@ resource "kubectl_manifest" "apps" {
     yaml_body = element(data.kubectl_file_documents.apps.documents, count.index)
     override_namespace = "argocd"
 }
+
+*/
