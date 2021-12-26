@@ -132,14 +132,17 @@ provider "helm" {
 
 resource helm_release argocd-install {
   name       = "argocd-apps"
-  repository = "https://github.com/kusznerr/wabbit-rk5-gke-argo-apps/"
+  repository = "https://kusznerr.github.io/wabbit-rk5-gke-argo-apps"
   chart      = "argo-cd"
 }
 
 resource helm_release root-app {
+    depends_on = [
+      helm_release.argocd-install,
+    ]
   name       = "root-app"
-  repository = "https://github.com/kusznerr/wabbit-rk5-gke-argo-apps/"
-  chart      = "root"
+  repository = "https://kusznerr.github.io/wabbit-rk5-gke-argo-apps"
+  chart      = "root-app"
 }
 
 /*
