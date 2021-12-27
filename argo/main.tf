@@ -39,7 +39,7 @@ resource helm_release argocd-install {
   name       = "argocd-apps"
   repository = "https://kusznerr.github.io/wabbit-rk5-gke-argo-apps"
   chart      = "argo-cd"
-  version    = "1.0.3"
+  version    = "1.0.4"
 }
 
 resource helm_release root-app {
