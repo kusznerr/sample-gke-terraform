@@ -1,20 +1,3 @@
-terraform {
-  required_providers {
-    kubernetes = {
-      source = "hashicorp/kubernetes"
-      version = ">= 2.0.3"
-    }
-    helm = {
-      source  = "hashicorp/helm"
-      version = ">= 2.1.0"
-    }
-    kubectl = {
-      source = "gavinbunney/kubectl"
-      version = "1.13.1"
-    }
-  }
-}
-
 provider "google" {
   project     = var.project_id
   region      = var.region
@@ -123,6 +106,8 @@ module "gke" {
   }
 }
 
+/*
+
 data "google_client_config" "default" {
   depends_on = [module.gke]
 }
@@ -149,7 +134,7 @@ module "kubernetes-config" {
   source           = "./k8s-resources"
 }
 
-/*
+
 // Enable ArgoCD server
 // Any changes to this configuration ie. destroy / refresh throws terraform errors
 // Moved to helm release for ArgoCD as well as root application as outlined above
