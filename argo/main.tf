@@ -22,19 +22,16 @@ data "terraform_remote_state" "gke" {
   }
 }
 
-resource "local_file" "kubeconfig" {
-  content  = data.terraform_remote_state.gke.outputs.kubeconfig_raw
-  filename = "~/.kube/config"
-}
+# resource "local_file" "kubeconfig" {
+#   content  = data.terraform_remote_state.gke.outputs.kubeconfig_raw
+#   filename = "~/.kube/config"
+# }
 
 provider "helm" {
-depends_on = [ local_file.kubeconfig ]
   kubernetes {
-    config_path = "~/.kube/config"
-    config_context = "rafal-gke-prod"
-    //host  = "https://${data.terraform_remote_state.gke.outputs.kubernetes_endpoint}"
-    //token = data.terraform_remote_state.gke.outputs.client_token
-    //cluster_ca_certificate = data.terraform_remote_state.gke.outputs.ca_certificate
+    host  = data.terraform_remote_state.gke.outputs.kubernetes_endpoint
+    token = data.terraform_remote_state.gke.outputs.client_token
+    cluster_ca_certificate = data.terraform_remote_state.gke.outputs.ca_certificate
   }
 }
 
