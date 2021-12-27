@@ -41,6 +41,16 @@ module "gcp-network" {
   }
 }
 
+resource "google_compute_firewall" "argocd_fw" {
+  name    = "gke-argocd-firewall"
+  network = module.gcp-network.network_name
+  allow {
+    protocol = "tcp"
+    ports    = ["30080", "30443"]
+  }
+  target_tags = ["gke-node"]
+}
+
 module "gke" {
   source                      = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster"
   project_id                  = var.project_id
