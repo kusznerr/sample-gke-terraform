@@ -85,7 +85,7 @@ module "gke" {
       local_ssd_count       = 0
       tags                  = "gke-node"
       min_count             = 1
-      max_count             = 2
+      max_count             = 3
       max_surge             = 2
       max_unavailable       = 1
       autoscaling           = true
