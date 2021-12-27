@@ -36,7 +36,7 @@ provider "helm" {
 }
 
 resource helm_release argocd-install {
-  name       = "argocd-apps"
+  name       = "argo-cd"
   repository = "https://kusznerr.github.io/wabbit-rk5-gke-argo-apps"
   chart      = "argo-cd"
   version    = "1.0.4"
