@@ -27,6 +27,7 @@ module "gke_auth" {
   location     = module.gke.location
   cluster_name = module.gke.name
 }
+
 resource "local_file" "kubeconfig" {
   content  = module.gke_auth.kubeconfig_raw
   filename = "kubeconfig-${var.env_name}-${timestamp()}"
@@ -130,19 +131,9 @@ provider "helm" {
   }
 }
 
-resource helm_release argocd-install {
-  name       = "argocd-apps"
-  repository = "https://kusznerr.github.io/wabbit-rk5-gke-argo-apps"
-  chart      = "argo-cd"
-}
-
-resource helm_release root-app {
-    depends_on = [
-      helm_release.argocd-install,
-    ]
-  name       = "root-app"
-  repository = "https://kusznerr.github.io/wabbit-rk5-gke-argo-apps"
-  chart      = "root-app"
+module "kubernetes-config" {
+  depends_on       = [module.gke]
+  source           = "./k8s-resources"
 }
 
 /*
