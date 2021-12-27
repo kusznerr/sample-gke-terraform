@@ -1,5 +1,6 @@
 variable "GOOGLE_CREDENTIALS" {
   description = "Credentials set in TFE workspace"
+  default="xxx"
 }
 
 variable "project_id" {
