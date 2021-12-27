@@ -123,11 +123,24 @@ module "gke" {
   }
 }
 
+data "google_client_config" "default" {
+  depends_on = [module.gke]
+}
+
+# Defer reading the cluster data until the GKE cluster exists.
+data "google_container_cluster" "default" {
+  name = local.cluster_name
+  depends_on = [module.gke]
+}
+
+
 provider "helm" {
   kubernetes {
-    host  = module.gke_auth.host
-    token = module.gke_auth.token
-    cluster_ca_certificate = module.gke_auth.cluster_ca_certificate
+    host  = "https://${data.google_container_cluster.default.endpoint}"
+    token = data.google_client_config.default.access_token
+    cluster_ca_certificate = base64decode(
+      data.google_container_cluster.default.master_auth[0].cluster_ca_certificate,
+    )
   }
 }
 
