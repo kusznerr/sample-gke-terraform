@@ -23,7 +23,7 @@ data "terraform_remote_state" "gke" {
 }
 
 resource "local_file" "kubeconfig" {
-  content  = data.terraform_remote_state.gke.kubeconfig_raw
+  content  = data.terraform_remote_state.gke.outputs.kubeconfig_raw
   filename = "~/.kube/config"
 }
 
