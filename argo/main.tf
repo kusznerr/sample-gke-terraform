@@ -24,7 +24,7 @@ data "terraform_remote_state" "gke" {
 
 provider "helm" {
   kubernetes {
-    host  = "https://${data.terraform_remote_state.gke.outputs.endpoint}"
+    host  = "https://${data.terraform_remote_state.gke.outputs.kubernetes_endpoint}"
     token = data.terraform_remote_state.gke.outputs.client_token
     cluster_ca_certificate = data.terraform_remote_state.gke.outputs.ca_certificate
   }
