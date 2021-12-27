@@ -56,8 +56,8 @@ resource "kubectl_manifest" "root-app" {
     depends_on = [
       kubectl_manifest.argocd,
     ]
-    count     = length(data.kubectl_file_documents.apps.documents)
-    yaml_body = element(data.kubectl_file_documents.apps.documents, count.index)
+    count     = length(data.kubectl_file_documents.root-app.documents)
+    yaml_body = element(data.kubectl_file_documents.root-app.documents, count.index)
     override_namespace = "argocd"
 }
 
