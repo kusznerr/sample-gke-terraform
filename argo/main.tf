@@ -20,7 +20,7 @@ data "terraform_remote_state" "gke" {
 
 provider "kubectl" {
   host                   = data.terraform_remote_state.gke.outputs.kubernetes_endpoint
-  cluster_ca_certificate = data.terraform_remote_state.gke.outputs.ca_certificat
+  cluster_ca_certificate = data.terraform_remote_state.gke.outputs.ca_certificate
   token                  = data.terraform_remote_state.gke.outputs.client_token
   load_config_file       = false
 }
