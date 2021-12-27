@@ -129,7 +129,7 @@ data "google_client_config" "default" {
 
 # Defer reading the cluster data until the GKE cluster exists.
 data "google_container_cluster" "default" {
-  name = ${var.cluster_name}-${var.env_name}
+  name = "${var.cluster_name}-${var.env_name}"
   depends_on = [module.gke]
 }
 
