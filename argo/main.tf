@@ -28,6 +28,7 @@ resource "local_file" "kubeconfig" {
 }
 
 provider "helm" {
+depends_on = [ local_file.kubeconfig ]
   kubernetes {
     config_path = "~/.kube/config"
     config_context = "rafal-gke-prod"
