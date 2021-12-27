@@ -41,16 +41,6 @@ module "gcp-network" {
   }
 }
 
-resource "google_compute_firewall" "argocd_fw" {
-  name    = "gke-argocd-firewall"
-  network = module.gcp-network.network_name
-  allow {
-    protocol = "tcp"
-    ports    = ["30080", "30443"]
-  }
-  target_tags = ["gke-node"]
-}
-
 module "gke" {
   source                      = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster"
   project_id                  = var.project_id
@@ -115,81 +105,3 @@ module "gke" {
     ]
   }
 }
-
-/*
-
-data "google_client_config" "default" {
-  depends_on = [module.gke]
-}
-
-# Defer reading the cluster data until the GKE cluster exists.
-data "google_container_cluster" "default" {
-  name = "${var.cluster_name}-${var.env_name}"
-  depends_on = [module.gke]
-}
-
-
-provider "helm" {
-  kubernetes {
-    host  = "https://${data.google_container_cluster.default.endpoint}"
-    token = data.google_client_config.default.access_token
-    cluster_ca_certificate = base64decode(
-      data.google_container_cluster.default.master_auth[0].cluster_ca_certificate,
-    )
-  }
-}
-
-module "kubernetes-config" {
-  depends_on       = [module.gke]
-  source           = "./k8s-resources"
-}
-
-
-// Enable ArgoCD server
-// Any changes to this configuration ie. destroy / refresh throws terraform errors
-// Moved to helm release for ArgoCD as well as root application as outlined above
-
-provider "kubectl" {
-  host                   = module.gke_auth.host
-  cluster_ca_certificate = base64decode(module.gke_auth.cluster_ca_certificate)
-  token                  = module.gke_auth.token
-  load_config_file       = false
-}
-
-data "kubectl_file_documents" "namespace" {
-    content = file("./manifests/argocd/namespace.yaml")
-} 
-
-data "kubectl_file_documents" "argocd" {
-    content = file("./manifests/argocd/install.yaml")
-}
-
-data "kubectl_file_documents" "apps" {
-    content = file("./manifests/argocd/apps.yaml")
-}
-
-resource "kubectl_manifest" "namespace" {
-    count     = length(data.kubectl_file_documents.namespace.documents)
-    yaml_body = element(data.kubectl_file_documents.namespace.documents, count.index)
-    override_namespace = "argocd"
-}
-
-resource "kubectl_manifest" "argocd" {
-    depends_on = [
-      kubectl_manifest.namespace,
-    ]
-    count     = length(data.kubectl_file_documents.argocd.documents)
-    yaml_body = element(data.kubectl_file_documents.argocd.documents, count.index)
-    override_namespace = "argocd"
-}
-
-resource "kubectl_manifest" "apps" {
-    depends_on = [
-      kubectl_manifest.argocd,
-    ]
-    count     = length(data.kubectl_file_documents.apps.documents)
-    yaml_body = element(data.kubectl_file_documents.apps.documents, count.index)
-    override_namespace = "argocd"
-}
-
-*/
