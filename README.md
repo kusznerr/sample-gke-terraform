@@ -1,5 +1,8 @@
 # sample-gke-terraform
-sample gke cluster for play and fun
+sample gke cluster for play and fun. 
+
+## Setting up argoCD
+As an option, there is a possibility to add in ArgoCD /w app-of-apps pattern. Please see separate deployment instructions under `argo` folder. 
 
 # Simple Regional Cluster
 

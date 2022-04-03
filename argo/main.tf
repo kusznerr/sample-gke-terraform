@@ -7,16 +7,27 @@ terraform {
   }
 }
 
+/* Remote backend for TFE 
 data "terraform_remote_state" "gke" {
   backend = "remote"
 
   config = {
-    organization = "wabbit-dev"
+    organization = var.tfe_org
     workspaces = {
-      name = "wabbit-rk5-gke"
+      name = var.tfe_workspace
     }
   }
 }
+*/
+
+/* Remote backend for local terraform execution */
+data "terraform_remote_state" "gke" {
+  backend = "local"
+  config = {
+    path = "../terraform.tfstate"
+  }
+}
+
 
 provider "kubectl" {
   host                   = data.terraform_remote_state.gke.outputs.kubernetes_endpoint
@@ -60,20 +71,3 @@ resource "kubectl_manifest" "root-app" {
     yaml_body = element(data.kubectl_file_documents.root-app.documents, count.index)
     override_namespace = "argocd"
 }
-
-
-# resource helm_release argocd-install {
-#   name       = "argo-cd"
-#   repository = "https://kusznerr.github.io/wabbit-rk5-gke-argo-apps"
-#   chart      = "argo-cd"
-#   version    = "1.0.4"
-# }
-
-# resource helm_release root-app {
-#     depends_on = [
-#       helm_release.argocd-install,
-#     ]
-#   name       = "root-app"
-#   repository = "https://kusznerr.github.io/wabbit-rk5-gke-argo-apps"
-#   chart      = "root-app"
-# }
