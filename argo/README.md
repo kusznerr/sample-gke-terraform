@@ -1,7 +1,7 @@
 # ArgoCD deployment using terraform
 Installing aargoCD to already provisioned cluster. 
 
-See my GKE /w Terraform tutorial - Step4 : [here]('https://medium.com/aws-tip/setting-up-gke-with-terraform-cloud-bf9dfb5d1c8b')
+See my GKE /w Terraform tutorial - Step4 : [here](https://medium.com/aws-tip/setting-up-gke-with-terraform-cloud-bf9dfb5d1c8b)
 
 # Important notes
 ## Terraform backends
