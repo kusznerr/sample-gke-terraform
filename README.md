@@ -46,7 +46,13 @@ Simple GKE cluster with output of `kubeconfig`
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 To provision this example, run the following from within this directory:
+- `gcloud auth application-default login --project [gcp-project-name]  ` to set the google context
+Reference material [here](https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/using_gke_with_terraform)
 - `terraform init` to get the plugins
 - `terraform plan` to see the infrastructure plan
 - `terraform apply` to apply the infrastructure build
 - `terraform destroy` to destroy the built infrastructure
+
+To use the cluster from kubectl do following:
+- `gcloud container clusters get-credentials CLUSTER_NAME` add in new context in your $home/.kube/config
+Reference material [here](https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-access-for-kubectl)
