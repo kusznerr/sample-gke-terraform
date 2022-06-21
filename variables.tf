@@ -1,31 +1,31 @@
 variable "GOOGLE_CREDENTIALS" {
   description = "Credentials set in TFE workspace"
-  default="xxx"
+  default="C:/GCP_TERRAFORM_KEY/key.json"
 }
 
 variable "project_id" {
   description = "your_project_id"
-  default= "wabbit-rk5"
+  default= "spring-banner-353911"
 }
 
 variable "region" {
   description = "The region to host the cluster in"
-  default     = "europe-west4"
+  default     = "us-central1"
 }
 
 variable "zones" {
   description = "The region to host the cluster in"
-  default     = ["europe-west4-a"]
+  default     = ["us-central1-a"]
 }
 
 variable "cluster_name" {
   description = "The name for the GKE cluster"
-  default     = "rafal-gke"
+  default     = "test-gke"
 }
 
 variable "env_name" {
   description = "The environment for the GKE cluster"
-  default     = "prod"
+  default     = "test"
 }
 variable "network" {
   description = "The VPC network created to host the cluster in"
